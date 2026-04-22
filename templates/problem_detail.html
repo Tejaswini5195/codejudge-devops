@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ problem.title }} - CodeJudge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ problem.title }}</h1>
+
+        <p>Logged in as: <strong>{{ username }}</strong></p>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+        <div class="problem-box">
+            <h3>Description</h3>
+            <p>{{ problem.description }}</p>
+
+            <h3>Sample Input</h3>
+            <pre>{{ problem.sample_input }}</pre>
+
+            <h3>Sample Output</h3>
+            <pre>{{ problem.sample_output }}</pre>
+        </div>
+
+        <h3>Submit Your Python Code</h3>
+        <form method="POST" action="/submit/{{ problem.id }}">
+            <textarea name="code" rows="12" placeholder="Write your Python code here..." required></textarea>
+            <button type="submit">Submit Code</button>
+        </form>
+
+        <div class="buttons">
+            <a href="/problems">Back to Problems</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

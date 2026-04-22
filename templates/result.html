@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Result - CodeJudge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Submission Result</h1>
+
+        <p><strong>User:</strong> {{ username }}</p>
+        <p><strong>Problem:</strong> {{ problem.title }}</p>
+        <p><strong>Verdict:</strong> {{ verdict }}</p>
+        <p><strong>Passed Test Cases:</strong> {{ passed_count }} / {{ total_count }}</p>
+
+        {% if failed_case %}
+            <h3>Failed Test Case #{{ failed_case }}</h3>
+
+            <h4>Input</h4>
+            <pre>{{ input_data }}</pre>
+
+            <h4>Your Output / Error</h4>
+            <pre>{{ actual_output }}</pre>
+
+            <h4>Expected Output</h4>
+            <pre>{{ expected_output }}</pre>
+        {% else %}
+            <h3>All test cases passed successfully.</h3>
+        {% endif %}{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+        <div class="buttons">
+            <a href="/problem/{{ problem.id }}">Try Again</a>
+            <a href="/problems">Back to Problems</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
