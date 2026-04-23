@@ -7,44 +7,48 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Submission Result</h1>
 
-        <p><strong>User:</strong> {{ username }}</p>
-        <p><strong>Problem:</strong> {{ problem.title }}</p>
-        <p><strong>Verdict:</strong> {{ verdict }}</p>
-        <p><strong>Passed Test Cases:</strong> {{ passed_count }} / {{ total_count }}</p>
+<div class="container">
+    <h1>Submission Result</h1>
 
-        {% if failed_case %}
-            <h3>Failed Test Case #{{ failed_case }}</h3>
+    <p><strong>User:</strong> {{ username }}</p>
+    <p><strong>Problem:</strong> {{ problem.title }}</p>
 
-            <h4>Input</h4>
+    {% if verdict == 'Accepted' %}
+        <div class="verdict-box verdict-accepted">Verdict: {{ verdict }}</div>
+    {% elif verdict == 'Wrong Answer' %}
+        <div class="verdict-box verdict-wa">Verdict: {{ verdict }}</div>
+    {% else %}
+        <div class="verdict-box verdict-other">Verdict: {{ verdict }}</div>
+    {% endif %}
+
+    <p><strong>Passed Test Cases:</strong> {{ passed_count }} / {{ total_count }}</p>
+
+    {% if failed_case %}
+        <h2>Failed Test Case #{{ failed_case }}</h2>
+
+        <div class="problem-box">
+            <h3>Input</h3>
             <pre>{{ input_data }}</pre>
+        </div>
 
-            <h4>Your Output / Error</h4>
+        <div class="problem-box">
+            <h3>Your Output / Error</h3>
             <pre>{{ actual_output }}</pre>
+        </div>
 
-            <h4>Expected Output</h4>
+        <div class="problem-box">
+            <h3>Expected Output</h3>
             <pre>{{ expected_output }}</pre>
-        {% else %}
-            <h3>All test cases passed successfully.</h3>
-        {% endif %}{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-container">
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
         </div>
     {% endif %}
-{% endwith %}
 
-        <div class="buttons">
-            <a href="/problem/{{ problem.id }}">Try Again</a>
-            <a href="/problems">Back to Problems</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
+   <div class="buttons">
+    <a href="/problem/{{ problem.id }}">Try Again</a>
+    <a href="/problems">Back to Problems</a>
+    <a href="/submissions">My Submissions</a>
+</div>
+</div>
+
 </body>
 </html>

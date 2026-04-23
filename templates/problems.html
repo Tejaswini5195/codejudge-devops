@@ -7,40 +7,39 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Problem List</h1>
+<div class="container">
+    <h1>Problem Set</h1>
+    <p>Welcome, <strong>{{ username }}</strong>. Choose a problem and start coding.</p>
 
-        <p>Logged in as: <strong>{{ username }}</strong></p>
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
             {% for category, message in messages %}
-                <div class="flash-message {{ category }}">
-                    {{ message }}
-                </div>
+                <div class="message {{ category }}">{{ message }}</div>
             {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
-        <div class="buttons">
-            <a href="/logout">Logout</a>
-        </div>
-
-        {% if problems %}
-            <div class="problem-list">
-                {% for problem in problems %}
-                    <div class="problem-card">
-                        <h2>{{ problem.title }}</h2>
-                        <p>{{ problem.description[:100] }}...</p>
-                        <a href="/problem/{{ problem.id }}">Solve Problem</a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>No problems available.</p>
         {% endif %}
+    {% endwith %}
 
-        <p><a href="/">Back to Home</a></p>
+    <div class="buttons">
+        <a href="/logout">Logout</a>
     </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Problem Title</th>
+            <th>Action</th>
+        </tr>
+
+        {% for problem in problems %}
+        <tr>
+            <td>{{ problem.id }}</td>
+            <td>{{ problem.title }}</td>
+            <td>
+                <a class="action-link" href="/problem/{{ problem.id }}">Solve</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 </body>
 </html>

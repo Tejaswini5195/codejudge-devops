@@ -169,6 +169,35 @@ def submit_code(problem_id):
         username=username,
         problem=problem
     )
+@app.route('/submissions')
+def submissions():
+    if 'username' not in session:
+        flash('Please log in first.', 'error')
+        return redirect(url_for('login'))
+
+    username = session['username']
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT s.id, s.username, s.problem_id, p.title AS problem_title, s.verdict, s.submitted_at
+        FROM submissions s
+        JOIN problems p ON s.problem_id = p.id
+        WHERE s.username = %s
+        ORDER BY s.submitted_at DESC
+    """
+    cursor.execute(query, (username,))
+    all_submissions = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template(
+        'submissions.html',
+        submissions=all_submissions,
+        username=username
+    )
 @app.route('/logout')
 def logout():
     session.pop('username', None)
