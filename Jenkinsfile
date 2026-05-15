@@ -2,22 +2,25 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone Repo') {
             steps {
-                git branch: 'main', url: 'https://github.com/HarshitaKadiwal/codejudge.git'
+                git branch: 'main',
+                url: 'https://github.com/Tejaswini5195/codejudge-devops.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t codejudge-app .'
+                bat 'docker build -t codejudge-app .'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 codejudge-app'
+                bat 'docker run -d -p 5000:5000 codejudge-app'
             }
         }
+
     }
 }
